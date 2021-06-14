@@ -1,3 +1,3 @@
 #!/usr/bin/env sh
 
-uvicorn api:app --reload
+uvicorn app.main:app --reload

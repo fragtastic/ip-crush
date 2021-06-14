@@ -1,28 +1,16 @@
-import ipaddress
+from app.ipconsolidation import consolidate
 
-
-ips = []
+output = []
 count_addresses = 0
 count_networks = 0
 
-inFileName = 'CHANGEME.txt'
+inFileName = 'data/testdata.txt'
 
 with open(inFileName, 'rt') as inFile:
-    for line in inFile:
-        line = line.strip()
-        try:
-            addr = ipaddress.IPv4Address(line)
-            ips.append(addr)
-            count_addresses += 1
-        except ipaddress.AddressValueError:
-            pass
+    output, count_addresses, count_networks = consolidate(inFile, grouped=False)
 
-cidr = ipaddress.collapse_addresses(ips)
-
-with open(f'ungrouped_{inFileName}', 'wt') as outFile:
-    for network in cidr:
-        count_networks += 1
-        outFile.write(f'{network}\n')
+with open(f'{inFileName}_ungrouped.txt', 'wt') as outFile:
+    outFile.write('\n'.join(output))
 
 print(f'networks: {count_networks}')
 print(f'addresses: {count_addresses}')
