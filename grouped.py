@@ -20,6 +20,11 @@ with open(inFileName, 'rt') as inFile, open(f'grouped_{inFileName}', 'wt') as ou
             ips = []
             outFile.write(line)
 
+    # Must do this one final time since there may be nothing after the last set of addresses
+    for network in ipaddress.collapse_addresses(ips):
+        outFile.write(f'{network}\n')
+        count_networks += 1
+
 print(f'networks: {count_networks}')
 print(f'addresses: {count_addresses}')
 print(f'networks/addresses: {count_networks / count_addresses}')
